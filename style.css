@@ -1,0 +1,365 @@
+/*#region Body/HTML */
+
+html,
+body {
+    font-size: 16px;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    font-family: Poppins;
+}
+
+body {
+    position: relative;
+    cursor: crosshair;
+    overflow: hidden;
+    font-family: Poppins;
+
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+}
+
+
+/*#endregion */
+
+
+/* #region UI-Elements */
+    .btn{
+        font-family: Poppins;
+        position: absolute;
+        outline: none;    
+        transform: translate(-50%, -50%);
+        letter-spacing: 6px;
+        text-transform: uppercase;
+        border: 1px solid #fff;
+        padding: 1em 3em;
+        text-align: center;
+        transition: color 0.4s ease-out;
+        font-size: 2em;
+        box-sizing: border-box;
+    }
+
+/* #endregion */
+
+/*#region Overlay Start */
+
+.overlay-start {
+    width: 100%;
+    height: 100vh;
+    background-image: url('./images/background.jpg');
+    background-size: cover;
+    background-position: center;
+    position: absolute;
+    z-index: 100;
+}
+
+.overlay-start::after {
+    content: "";
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+    position: absolute;
+}
+
+
+
+#btn-play {  
+    z-index: 101;
+    color: white;
+    background: none;
+    top: 50%;
+    left: 50%;
+}
+
+#btn-play:hover {
+    cursor: crosshair;
+    color: #101010;
+}
+
+#btn-play::before {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.801);
+    z-index: -1;
+    transition: top 0.4s ease-out;
+}
+
+#btn-play:hover::before {
+    top: 0;   
+}
+
+
+/* #endregion*/
+
+/* #region Overlay Selection */
+    #overlay-selection{
+        width: 100%;
+        height: 100%;
+        z-index: 90;
+        position: absolute;
+        background-image: url("./images/selection-background.jpg");
+        background-size: cover;
+    }
+    #overlay-selection::after {
+        content: "";
+        width: 100%;
+        height: 100vh;
+        z-index: 91;
+        background: rgba(0, 0, 0, 0.6);
+        position: absolute;
+    }
+
+    #btn-start{
+        top: 94%;
+        left: 50%;
+        z-index: 92;
+        background: none;
+    }
+    #btn-start:hover {
+        cursor: crosshair;
+        color: #fff;
+    }
+    
+    #btn-start::before {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        top: 0;
+        background: rgba(255, 255, 255, 0.801);
+        z-index: -1;
+        transition: top 0.4s ease-out,
+            right 0.4s ease-out,
+            left 0.4s ease-out,
+            bottom 0.4s ease-out;
+    }
+    
+    #btn-start:hover::before {
+        top: 50%; 
+        bottom: 50%; 
+    }
+
+    #selection-container{
+        width: 90%;
+        height: 75%;
+        position: absolute;
+        top: 10%;
+        left: 5%;
+        
+        z-index: 93;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-gap: 1vw;
+        align-self: center;
+
+        overflow: auto;
+    }
+    #selection-title{
+        position: absolute;
+        color: #fff;
+        z-index: 93;
+        text-transform: uppercase;
+        letter-spacing: 6px;
+        text-align: center;
+        width: 100%;
+        margin-top: 2vw;
+
+    }   
+    .selectionTile{
+        width: 100%;
+        box-sizing: border-box;
+        padding: 1em;   
+        position: relative;
+    }
+    
+    .selectionTile_unselected::before{
+        background: #fff;
+        opacity: .3;
+        border-radius: 1em;  
+        content: "";
+        position: absolute;        
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;  
+        z-index: 93;
+        transition: opacity 150ms ease-out;
+    }
+    .selectionTile_selected::before{
+        background: #fff;
+        opacity: .8;
+        border-radius: 1em;  
+        content: "";
+        position: absolute;        
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;  
+        z-index: 93;
+        transition: opacity 150ms ease-out;
+    }
+    .selectionTile_unselected:hover::before{
+        opacity: .6;
+    }
+    
+    .selectionTile_img{
+        width: 100%;
+        position: relative;
+        z-index: 94; 
+        pointer-events: none;
+    }
+    
+    
+/* #endregion */
+
+/* #region Playfield */
+
+.card {
+    position: relative;
+    box-sizing: border-box;
+    background-color: dimgray;
+    border-radius: 5%;
+    width: 100%;
+    padding: 5%;
+    
+    
+
+    transition: transform 500ms cubic-bezier(0.42, -0.04, 0.3, 1.51);
+}
+
+.card__scale {
+    transition: transform 100ms ease-out, opacity 80ms cubic-bezier(0.42, -0.04, 0.3, 1.51);
+}
+
+.card__scale:hover {
+    transform: scale(1.1, 1.1);
+    opacity: 0.8;
+}
+
+.card__maxScale {
+    transition: transform 400ms ease-out;    
+}
+
+.card__maxScale:hover {
+    transform: scale(2, 2);
+    opacity: 1;
+    z-index: 200;
+    position: relative;
+
+}
+
+.card__turn {
+    transform: rotateY(180deg);
+
+}
+
+.card__img {
+    position: relative;
+    width: 100%;
+    border-radius: 10%;
+    opacity: 0;
+    transition: opacity 150ms 100ms ease-in;
+
+}
+
+.card__img__open {
+    opacity: 1;
+
+}
+
+#play-field {
+    padding: 7vw 5vw;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    box-sizing: border-box;
+    transition: opacity 500ms ease-out;
+
+}
+
+.play-field__darkened {
+    opacity: .2 !important;
+
+}
+
+.play-field__darkened::before {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, .2);
+    opacity: 1;
+}
+
+#cardContainer {
+    display: grid;
+    grid-gap: 1em;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 4fr));
+    
+}
+
+
+/* #region Options */
+
+#optionsContainer {
+    background: rgb(91, 181, 233);
+    height: 20vw;
+    width: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
+    opacity: .5;
+    transform: translateY(-80%);
+    transition: opacity 500ms ease-out, transform 500ms ease-out;
+    z-index: 85;
+}
+
+#optionsContainer:hover {
+    opacity: .95;
+    transform: translateY(0);
+}
+
+.option {
+    opacity: 1;
+    transition: transform 150ms ease-out, opacity 150ms ease-out;
+    position: absolute;
+    font-size: 6vw;
+    top: calc(50% - 3vw);
+    z-index: 86;
+}
+
+.option-restart {
+    left: 30%;
+    transition: transform 500ms ease-out;
+}
+
+.option-restart:hover {
+    transform: rotate(180deg);
+}
+
+.option-mute {
+    right: 30%;
+    transition: opacity 500ms ease-out;
+}
+
+.option-mute:hover {
+    opacity: .3;
+}
+
+
+/* #endregion */
+
+
+/* #endregion */
